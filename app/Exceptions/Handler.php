@@ -13,7 +13,6 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
     ];
 
     /**
@@ -42,14 +41,69 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
+     * @return \Illuminate\Http\JsonResponse
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        // EloquentでfindOrFailとかを使って見つからなかった時の例外
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return response()->json([
+                'error' => [
+                    'code'    => 'NOT_FOUND',
+                    'message' => 'データが見つかりません',
+                ],
+            ], 404);
+        }
+
+        // 404エラー
+        elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            return response()->json([
+                'error' => [
+                    'code'    => 'NOT_FOUND',
+                    'message' => 'URLが見つかりません',
+                ],
+            ], 404);
+        }
+
+        // abort(403)とか、404以外のHTTP例外
+        elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            return response()->json([
+                'error' => [
+                    'code'    => 'HTTP_ERROR',
+                    'message' => $exception->getMessage(),
+                ],
+            ], $exception->getStatusCode());
+        }
+
+        // バリデートエラー
+        elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
+            return response()->json([
+                'error' => [
+                    'code'    => 'VALIDATE_FAILED',
+                    'message' => '入力値が不正です',
+                    'detail'  => $exception->validator->errors()->toArray(),
+                ],
+            ], 400);
+        }
+
+        // 手動スローエラー
+        elseif ($exception instanceof \App\Exceptions\ApplicationException) {
+            return response()->json([
+                'error' => [
+                    'code'    => 'APPLICATION_ERROR',
+                    'message' => $exception->getMessage(),
+                ],
+            ], 400);
+        }
+
+        // その他
+        return response()->json([
+            'error' => [
+                'code'    => 'INTERNAL_SERVER_ERROR',
+                'message' => 'サーバーエラー',
+            ],
+        ], 500);
     }
 }
