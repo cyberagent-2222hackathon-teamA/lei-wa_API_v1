@@ -66,4 +66,20 @@ class UserRepository
         return $user->token;
 
     }
+
+    /**
+     * user情報を更新する
+     *
+     * @param int $id user id
+     * @param array $params 更新情報
+     */
+    public function update($id, $params){
+
+        $user = $this->user
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $user->fill($params)->save();
+
+    }
 }

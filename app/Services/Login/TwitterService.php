@@ -73,7 +73,11 @@ class TwitterService
 
         $twitter_id = $twitter_user->get('account/verify_credentials')->screen_name;
 
+        $twitter_profile_image_url = $twitter_user->get('account/verify_credentials')->profile_image_url;
+
         $user_id = $this->user_repository->getOrCreateUserByTwitterID($twitter_id);
+
+        $this->user_repository->update($user_id, ['profile_image_url' => $twitter_profile_image_url]);
 
         $token   = $this->user_repository->updateToken($user_id);
 

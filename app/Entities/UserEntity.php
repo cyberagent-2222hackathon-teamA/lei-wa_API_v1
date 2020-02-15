@@ -17,7 +17,7 @@ class UserEntity extends BaseEntity
     /**
      * @var string
      */
-    public $twitter_id;
+    public $profile_image_url;
 
     /**
      * @var BaseEntityCollection[ContributeSummaryEntity]
@@ -32,10 +32,10 @@ class UserEntity extends BaseEntity
     {
 
         return [
-            'id' => $this->id,
-            'name'  => $this->name,
-            'twitter_id'  => $this->twitter_id,
-            'contributes' => $this->contributes,
+            'id'                    => $this->id,
+            'name'                  => $this->name,
+            'twitter_profile_image' => $this->profile_image_url,
+            'contributes'           => $this->contributes,
         ];
     }
 }
