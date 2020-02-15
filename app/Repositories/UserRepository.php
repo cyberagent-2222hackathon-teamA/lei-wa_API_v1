@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Entities\UserEntity;
+use App\Utilities\EntityMapper;
 
 class UserRepository
 {
@@ -14,6 +16,23 @@ class UserRepository
         $this->user = $user;
     }
 
+
+    /**
+     * idでuserを特定し, userの情報を返す
+     *
+     * @param int $user_id user id
+     * @return UserEntity
+     */
+    public function getUserById($user_id){
+
+        $user = $this->user::with('contributes')
+            ->where('id', $user_id)
+            ->firstOrFail()
+            ->toArray();
+
+        return EntityMapper::map($user, UserEntity::class);
+
+    }
 
     /**
      * twtter_idでuserを特定し, idを返す userが存在しない場合はuserを作成する
