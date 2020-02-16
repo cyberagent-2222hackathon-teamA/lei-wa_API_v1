@@ -3,19 +3,62 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Models\SlackWorkspaceUser;
 use App\Entities\UserEntity;
 use App\Utilities\EntityMapper;
+use GuzzleHttp\Client;
 
 class UserRepository
 {
 
     private $user;
 
-    public function __construct(User $user)
+
+    public function __construct(User $user, SlackWorkspaceUser $slack_workspace_user)
     {
-        $this->user = $user;
+        $this->user                 = $user;
+        $this->slack_workspace_user = $slack_workspace_user;
     }
 
+
+    /**
+     * 特定userの指定範囲のslackのデータを返す
+     *
+     * @param int $user_id user id
+     * @param string $oldest 最も古いメッセージのtimestamp
+     * @param string $latest 最も新しいメッセージのtimestamp
+     *
+     * @return UserEntity
+     */
+    public function getTodaySlackData($user_id, $oldest, $latest){
+
+        //user_idからslackのchannelとuser名を取得
+        $slack_user_info = $this->slack_workspace_user::with('slack_workspace')
+            ->where('user_id', $user_id)
+            ->firstOrFail()
+            ->toArray();
+
+        $slack_channel_id   = $slack_user_info['channel_id'];
+        $slack_user_id      = $slack_user_info['slack_user_id'];
+        $slack_token        = $slack_user_info['slack_workspace']['token'];
+
+        //slackと通信
+        $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channels.history', [
+            'query' => [
+                'channel' => $slack_channel_id,
+                'token'   => $slack_token,
+                'oldest'  => $oldest,
+                'latest'  => $latest,
+            ]
+        ]);
+
+        $todays_all_user_activity = json_decode($api_res->getBody()->getContents())->messages;
+
+        $user_activity = collect($todays_all_user_activity)->where('user', $slack_user_id);
+
+        return $user_activity;
+
+    }
 
     /**
      * idでuserを特定し, userの情報を返す
