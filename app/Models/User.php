@@ -14,9 +14,14 @@ class User extends Model
         'token',
     ];
 
-    public function contributes(): HasMany
+    public function contributes()
     {
         return $this->hasMany(ContributeSummary::class);
+    }
+
+    public function follows()
+    {
+        return $this->hasMany(Follow::class, 'follow_id');
     }
 
 }
