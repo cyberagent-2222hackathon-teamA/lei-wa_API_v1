@@ -68,10 +68,12 @@ class UserRepository
      */
     public function getUserById($user_id){
 
-        $user = $this->user::with('contributes')
+        $user = $this->user::with(['contributes', 'follows'])
             ->where('id', $user_id)
             ->firstOrFail()
             ->toArray();
+
+        var_dump($user);
 
         return EntityMapper::map($user, UserEntity::class);
 
