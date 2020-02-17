@@ -41,8 +41,9 @@ class UserService
         });
 
         $todays_reaction_summary = [
-            'count' => $todays_reaction_count,
-            'date'  => date("Y-m-d")
+            'post_count'     => $todays_activity->count(),
+            'reaction_count' => $todays_reaction_count,
+            'date'           => date("Y-m-d")
         ];
 
         $conventional_activity['contributes'][] = $todays_reaction_summary;

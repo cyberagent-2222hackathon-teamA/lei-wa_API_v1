@@ -7,7 +7,12 @@ class ContributeSummaryEntity extends BaseEntity
     /**
      * @var int
      */
-    public $count;
+    public $post_count;
+
+    /**
+     * @var int
+     */
+    public $reaction_count;
 
     /**
      * @var string
@@ -21,8 +26,9 @@ class ContributeSummaryEntity extends BaseEntity
     public function toArray()
     {
         return [
-            'count' => $this->count,
-            'date'  => $this->date,
+            'post_count'     => $this->post_count,
+            'reaction_count' => $this->reaction_count,
+            'date'           => $this->date,
         ];
     }
 

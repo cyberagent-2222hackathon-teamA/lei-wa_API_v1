@@ -20,7 +20,7 @@ class TimelineController extends Controller
 
     public function public(PublicRequest $request)
     {
-        $res = $this->timeline_service->getPublicTimeline($request->input('page', 1), $request->input('limit', 10));
+        $res = $this->timeline_service->getPublicTimeline((int)$request->input('page', 1), (int)$request->input('limit', 10));
         return $res;
     }
 }
