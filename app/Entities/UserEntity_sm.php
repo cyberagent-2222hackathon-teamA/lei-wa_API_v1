@@ -2,17 +2,17 @@
 
 namespace App\Entities;
 
-class ContributeSummaryEntity extends BaseEntity
+class UserEntity_sm extends BaseEntity
 {
     /**
-     * @var int
+     * @var string
      */
-    public $count;
+    public $name;
 
     /**
      * @var string
      */
-    public $date;
+    public $profile_image_url;
 
     /**
      * classを配列に変換
@@ -20,11 +20,10 @@ class ContributeSummaryEntity extends BaseEntity
      */
     public function toArray()
     {
+
         return [
-            'count' => $this->count,
-            'date'  => $this->date,
+            'name'                  => $this->name,
+            'twitter_profile_image' => $this->profile_image_url,
         ];
     }
-
-
 }

@@ -16,8 +16,7 @@ class UserTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->comment('id');
-            $table->string('name')->nullable()->comment('user name');
-            $table->string('twitter_id')->comment('twitter id');
+            $table->string('name')->nullable()->comment('user name(= twtter id)');
             $table->text('profile_image_url')->nullable()->comment('twitter profile_image_url');
             $table->string('token')->nullable()->comment('token for session');
             $table->timestamps();

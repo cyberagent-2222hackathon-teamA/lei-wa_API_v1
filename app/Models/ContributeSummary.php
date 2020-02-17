@@ -12,5 +12,10 @@ class ContributeSummary extends Model
         'date',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 
 }

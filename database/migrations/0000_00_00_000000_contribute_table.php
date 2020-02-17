@@ -26,7 +26,8 @@ class ContributeTable extends Migration
         Schema::create('contribute_summaries', function (Blueprint $table) {
             $table->increments('id')->comment('id');
             $table->integer('user_id')->comment('user id');
-            $table->integer('count')->comment('count of reactions');
+            $table->integer('post_count')->comment('count of post');
+            $table->integer('reaction_count')->comment('count of reactions');
             $table->date('date')->comment('date of activity');
             $table->timestamps();
         });

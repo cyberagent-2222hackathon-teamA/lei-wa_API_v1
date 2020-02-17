@@ -85,7 +85,7 @@ class UserRepository
     public function getOrCreateUserByTwitterID($twitter_id){
 
         $user = $this->user
-            ->firstOrCreate(['twitter_id' => $twitter_id]);
+            ->firstOrCreate(['name' => $twitter_id]);
 
         return $user->id;
 
