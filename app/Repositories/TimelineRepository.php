@@ -31,6 +31,7 @@ class TimelineRepository
         $total = $this->timeline->count();
 
         $contributes = $this->timeline::with('user')
+            ->orderBy('id', 'desc')
             ->forPage($page, $limit)
             ->get()
             ->toArray();

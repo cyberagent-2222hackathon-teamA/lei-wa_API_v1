@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10b304d1-07ed-46f4-ba53-3093c34f46db" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/Entities/ContributeSummaryWithUserEntity.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Entities/UserEntity_sm.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/TimelineController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Http/Requests/Timeline/PublicRequest.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Repositories/TimelineRepository.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Services/TimelineService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Entities/ContributeSummaryEntity.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Entities/ContributeSummaryEntity.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/ContributeSummary.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/ContributeSummary.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/UserRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/0000_00_00_000000_contribute_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/0000_00_00_000000_contribute_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/0000_00_00_000000_user_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/0000_00_00_000000_user_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/TimelineRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/TimelineRepository.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -66,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Repositories/TimelineRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+            <state relative-caret-position="287">
+              <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
               <folding>
                 <element signature="e#36#85#0#PHP" expanded="true" />
               </folding>
@@ -78,10 +66,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Entities/ContributeSummaryWithUserEntity.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
+            <state relative-caret-position="392">
               <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
             </state>
           </provider>
@@ -155,9 +143,9 @@
         <option value="$PROJECT_DIR$/database/migrations/0000_00_00_000000_user_table.php" />
         <option value="$PROJECT_DIR$/app/Services/Login/TwitterService.php" />
         <option value="$PROJECT_DIR$/app/Repositories/UserRepository.php" />
-        <option value="$PROJECT_DIR$/app/Repositories/TimelineRepository.php" />
         <option value="$PROJECT_DIR$/storage/logs/laravel.log" />
         <option value="$PROJECT_DIR$/app/Entities/ContributeSummaryWithUserEntity.php" />
+        <option value="$PROJECT_DIR$/app/Repositories/TimelineRepository.php" />
       </list>
     </option>
   </component>
@@ -359,7 +347,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1581927525381" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1581927730410" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -405,18 +393,18 @@
       <workItem from="1581608568746" duration="4349000" />
       <workItem from="1581642205771" duration="5707000" />
       <workItem from="1581659037734" duration="2097000" />
-      <workItem from="1581677682439" duration="35866000" />
+      <workItem from="1581677682439" duration="36021000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48019000" />
+    <option name="totallyTimeSpent" value="48174000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25772098" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25772098" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -432,10 +420,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="DB Execution Console" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.35742575" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.35742575" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" order="11" visible="true" weight="0.26930693" />
+      <window_info anchor="bottom" id="File Transfer" order="11" weight="0.26930693" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="bottom" id="Version Control" order="13" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -810,16 +798,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Repositories/TimelineRepository.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
-          <folding>
-            <element signature="e#36#85#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Entities/UserEntity_sm.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -839,8 +817,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Entities/ContributeSummaryWithUserEntity.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
+        <state relative-caret-position="392">
           <caret line="35" column="43" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Repositories/TimelineRepository.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
+          <folding>
+            <element signature="e#36#85#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
