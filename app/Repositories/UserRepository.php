@@ -111,6 +111,22 @@ class UserRepository
     }
 
     /**
+     * twtter_idで指定されたuserのsession tokenを更新し, 更新後のtokenを返す
+     *
+     * @param string $token authorization token
+     */
+    public function getUserByToken($token){
+
+        $user = $this->user
+            ->where('token', $token)
+            ->firstOrFail()
+            ->toArray();
+
+        return $user;
+
+    }
+
+    /**
      * user情報を更新する
      *
      * @param int $id user id
