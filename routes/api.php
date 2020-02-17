@@ -20,5 +20,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get ('/users/{user_id}', 'UserController@show');
 
     Route::get ('/users/{user_id}/contributes', 'User\ContributeController@index');
+
+    Route::get ('/timeline', 'TimelineController@public');
 });
 
