@@ -21,6 +21,10 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::get ('/users/{user_id}/contributes', 'User\ContributeController@index');
 
-    Route::get ('/timeline', 'TimelineController@public');
+    Route::get ('/timeline/public', 'TimelineController@public');
+
+    Route::middleware('check_auth')->group(function () {
+        Route::get ('/timeline/private', 'TimelineController@private');
+    });
 });
 
