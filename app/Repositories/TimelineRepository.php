@@ -28,7 +28,7 @@ class TimelineRepository
      */
     public function getPublicTimeline($page, $limit){
 
-        $total = $this->timeline->count();
+        $total = ceil((float)$this->timeline->count()/(float)$limit);
 
         $contributes = $this->timeline::with('user')
             ->orderBy('id', 'desc')
