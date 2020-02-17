@@ -73,8 +73,6 @@ class UserRepository
             ->firstOrFail()
             ->toArray();
 
-        var_dump($user);
-
         return EntityMapper::map($user, UserEntity::class);
 
     }
