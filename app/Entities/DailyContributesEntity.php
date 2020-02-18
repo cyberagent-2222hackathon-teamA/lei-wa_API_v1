@@ -6,6 +6,11 @@ class DailyContributesEntity extends BaseEntity
 {
 
     /**
+     * @var integer
+     */
+    public $id;
+
+    /**
      * @var string
      */
     public $text;
@@ -23,6 +28,7 @@ class DailyContributesEntity extends BaseEntity
     {
 
         return [
+            'id'        => $this->id,
             'message'   => $this->text,
             'reactions' => $this->reactions ? $this->reactions : [],
         ];

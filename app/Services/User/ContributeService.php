@@ -40,6 +40,10 @@ class ContributeService
 
           $res = $this->user_repository->getTodaySlackData($twitter_id, $oldest, $latest);
 
+          $res->each(function($item, $index){
+             $item->id = $index;
+          });
+
           return EntityMapper::collection($res->toArray(), DailyContributesEntity::class);
     }
 
