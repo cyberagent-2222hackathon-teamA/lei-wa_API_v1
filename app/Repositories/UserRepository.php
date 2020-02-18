@@ -34,6 +34,7 @@ class UserRepository
 
         //user_idからslackのchannelとuser名を取得
         $user_id = $this->getUserByTwitterId($twitter_id)->id;
+
         $slack_user_info = $this->slack_workspace_user::with('slack_workspace')
             ->where('user_id', $user_id)
             ->firstOrFail()
@@ -58,6 +59,23 @@ class UserRepository
         $user_activity = collect($todays_all_user_activity)->where('user', $slack_user_id);
 
         return $user_activity;
+
+    }
+
+    /**
+     * user idでuserを特定し, userの情報を返す
+     *
+     * @param string $twitter_id users user id
+     * @return array
+     */
+    public function getUserById(int $user_id){
+
+        $user = $this->user
+            ->where('id', $user_id)
+            ->firstOrFail()
+            ->toArray();
+
+        return $user;
 
     }
 

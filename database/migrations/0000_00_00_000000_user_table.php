@@ -19,6 +19,8 @@ class UserTable extends Migration
             $table->string('name')->nullable()->comment('user name(= twtter id)');
             $table->text('profile_image_url')->nullable()->comment('twitter profile_image_url');
             $table->string('token')->nullable()->comment('token for session');
+            $table->string('twitter_oauth_token')->nullable()->comment('twitter oauth token');
+            $table->string('twitter_oauth_token_secret')->nullable()->comment('twitter oauth token secret');
             $table->timestamps();
         });
     }
