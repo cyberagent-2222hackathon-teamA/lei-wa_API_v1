@@ -41,6 +41,7 @@ class UserService
         });
 
         $todays_reaction_summary = [
+            'id'             => $user_data['contributes']->last()->id + 1,
             'post_count'     => $todays_activity->count(),
             'reaction_count' => $todays_reaction_count,
             'date'           => date("Y-m-d")
