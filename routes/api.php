@@ -17,9 +17,9 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get ('/twitter/login', 'Auth\Login\TwitterController@getRedirectUrl');
     Route::get ('/twitter/callback', 'Auth\Login\TwitterController@twitterCallback');
 
-    Route::get ('/users/{user_id}', 'UserController@show');
+    Route::get ('/users/{twitter_id}', 'UserController@show');
 
-    Route::get ('/users/{user_id}/contributes', 'User\ContributeController@index');
+    Route::get ('/users/{twitter_id}/contributes', 'User\ContributeController@index');
 
     Route::get ('/timeline/public', 'TimelineController@public');
 

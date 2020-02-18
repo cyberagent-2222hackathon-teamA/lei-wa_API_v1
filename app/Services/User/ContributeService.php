@@ -22,11 +22,11 @@ class ContributeService
     /**
      * userのactivity情報の詳細を取得する
      *
-     * @param int $user_id user id
+     * @param string $twitter_id twitter id
      * @param array $params params
      * @return array
      */
-    public function getUserContributesById(int $user_id, array $params)
+    public function getUserContributesById(string $twitter_id, array $params)
     {
           $oldest = '';
           $latest = '';
@@ -38,7 +38,7 @@ class ContributeService
               $latest   = mktime(23,59, 59, date('m', $date),date('d', $date),date('Y', $date));
           }
 
-          $res = $this->user_repository->getTodaySlackData($user_id, $oldest, $latest);
+          $res = $this->user_repository->getTodaySlackData($twitter_id, $oldest, $latest);
 
           return EntityMapper::collection($res->toArray(), DailyContributesEntity::class);
     }
