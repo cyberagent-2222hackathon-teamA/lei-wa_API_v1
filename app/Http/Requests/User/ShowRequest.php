@@ -8,7 +8,7 @@ class ShowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer'],
+            'twitter_id' => ['required', 'string'],
         ];
     }
 
@@ -16,7 +16,7 @@ class ShowRequest extends FormRequest
     public function validationData()
     {
         return array_merge($this->all(), [
-            'user_id' => $this->route('user_id'),
+            'twitter_id' => $this->route('twitter_id'),
         ]);
     }
 }

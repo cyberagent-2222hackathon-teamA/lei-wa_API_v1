@@ -9,7 +9,7 @@ class IndexRequest extends FormRequest
     {
         return [
             'date'    => ['nullable', 'date'],
-            'user_id' => ['required', 'integer'],
+            'twitter_id' => ['required', 'string'],
         ];
     }
 
@@ -17,7 +17,7 @@ class IndexRequest extends FormRequest
     public function validationData()
     {
         return array_merge($this->all(), [
-            'user_id' => $this->route('user_id'),
+            'twitter_id' => $this->route('twitter_id'),
         ]);
     }
 }

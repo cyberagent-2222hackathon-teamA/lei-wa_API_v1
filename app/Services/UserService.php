@@ -18,19 +18,19 @@ class UserService
     }
 
     /**
-     * user_idから特定userの情報を取得する
+     * userのtwitteridから特定userの情報を取得する
      *
-     * @param int $user_id user id
+     * @param string $twitter_id user id
      * @return array
      */
-    public function getUserById(int $user_id)
+    public function getUserByTwitterId(string $twitter_id)
     {
-        $conventional_activity   = $this->user_repository->getUserById($user_id)->toArray();
+        $user_data = $this->user_repository->getUserByTwitterId($twitter_id)->toArray();
 
         $timestamp_start = mktime(0,0, 0, date('m'),date('d'),date('Y'));
         $timestamp_end   = mktime(23,59, 59, date('m'),date('d'),date('Y'));
 
-        $todays_activity         = $this->user_repository->getTodaySlackData($user_id, $timestamp_start, $timestamp_end);
+        $todays_activity = $this->user_repository->getTodaySlackData($user_data['id'], $timestamp_start, $timestamp_end);
 
         $todays_reaction_count = $todays_activity->sum(function ($el) {
             if(isset($el->reactions)){
@@ -46,9 +46,9 @@ class UserService
             'date'           => date("Y-m-d")
         ];
 
-        $conventional_activity['contributes'][] = $todays_reaction_summary;
+        $user_data['contributes'][] = $todays_reaction_summary;
 
-        return $conventional_activity;
+        return $user_data;
     }
 
 }

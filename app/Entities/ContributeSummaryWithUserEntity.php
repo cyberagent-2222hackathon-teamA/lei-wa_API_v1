@@ -6,6 +6,11 @@ class ContributeSummaryWithUserEntity extends BaseEntity
 {
 
     /**
+     * @var integer
+     */
+    public $id;
+
+    /**
      * @var string
      */
     public $date;
@@ -32,6 +37,7 @@ class ContributeSummaryWithUserEntity extends BaseEntity
     public function toArray()
     {
         return [
+            'id'             => $this->id,
             'date'           => $this->date,
             'post_count'     => $this->post_count,
             'reaction_count' => $this->reaction_count,

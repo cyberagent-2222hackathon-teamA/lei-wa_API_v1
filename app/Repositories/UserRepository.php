@@ -24,15 +24,16 @@ class UserRepository
     /**
      * 特定userの指定範囲のslackのデータを返す
      *
-     * @param int $user_id user id
+     * @param string $twitter_id twitter id
      * @param string $oldest 最も古いメッセージのtimestamp
      * @param string $latest 最も新しいメッセージのtimestamp
      *
      * @return UserEntity
      */
-    public function getTodaySlackData($user_id, $oldest, $latest){
+    public function getTodaySlackData($twitter_id, $oldest, $latest){
 
         //user_idからslackのchannelとuser名を取得
+        $user_id = $this->getUserByTwitterId($twitter_id)->id;
         $slack_user_info = $this->slack_workspace_user::with('slack_workspace')
             ->where('user_id', $user_id)
             ->firstOrFail()
@@ -61,15 +62,15 @@ class UserRepository
     }
 
     /**
-     * idでuserを特定し, userの情報を返す
+     * twitter idでuserを特定し, userの情報を返す
      *
-     * @param int $user_id user id
+     * @param string $twitter_id users twitter id
      * @return UserEntity
      */
-    public function getUserById($user_id){
+    public function getUserByTwitterId(string $twitter_id){
 
         $user = $this->user::with(['contributes', 'follows'])
-            ->where('id', $user_id)
+            ->where('name', $twitter_id)
             ->firstOrFail()
             ->toArray();
 
