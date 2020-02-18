@@ -8,7 +8,8 @@ class ContributeSummary extends Model
 {
     protected $fillable = [
         'user_id',
-        'count',
+        'post_count',
+        'reaction_count',
         'date',
     ];
 

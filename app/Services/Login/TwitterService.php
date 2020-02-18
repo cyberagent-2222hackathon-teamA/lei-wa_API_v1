@@ -77,7 +77,11 @@ class TwitterService
 
         $user_id = $this->user_repository->getOrCreateUserByTwitterID($twitter_id);
 
-        $this->user_repository->update($user_id, ['profile_image_url' => $twitter_profile_image_url]);
+        $this->user_repository->update($user_id, [
+            'profile_image_url' => $twitter_profile_image_url,
+            'twitter_oauth_token' => $token['oauth_token'],
+            'twitter_oauth_token_secret' => $token['oauth_token_secret'],
+        ]);
 
         $token   = $this->user_repository->updateToken($user_id);
 
