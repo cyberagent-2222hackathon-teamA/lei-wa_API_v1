@@ -30,7 +30,7 @@ class UserService
         $timestamp_start = mktime(0,0, 0, date('m'),date('d'),date('Y'));
         $timestamp_end   = mktime(23,59, 59, date('m'),date('d'),date('Y'));
 
-        $todays_activity = $this->user_repository->getTodaySlackData($user_data['id'], $timestamp_start, $timestamp_end);
+        $todays_activity = $this->user_repository->getTodaySlackData($twitter_id, $timestamp_start, $timestamp_end);
 
         $todays_reaction_count = $todays_activity->sum(function ($el) {
             if(isset($el->reactions)){
