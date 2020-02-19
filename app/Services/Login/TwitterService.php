@@ -71,9 +71,11 @@ class TwitterService
             $token['oauth_token_secret']
         );
 
-        $twitter_id = $twitter_user->get('account/verify_credentials')->screen_name;
+        $twitter_user_info = $twitter_user->get('account/verify_credentials');
 
-        $twitter_profile_image_url = $twitter_user->get('account/verify_credentials')->profile_image_url;
+        $twitter_id = $twitter_user_info->screen_name;
+
+        $twitter_profile_image_url = $twitter_user_info->profile_image_url_https;
 
         $user_id = $this->user_repository->getOrCreateUserByTwitterID($twitter_id);
 

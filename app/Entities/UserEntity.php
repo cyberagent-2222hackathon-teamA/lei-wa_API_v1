@@ -34,7 +34,7 @@ class UserEntity extends BaseEntity
         return [
             'id'                    => $this->id,
             'name'                  => $this->name,
-            'twitter_profile_image' => $this->profile_image_url,
+            'profile_image_url'     => $this->profile_image_url,
             'contributes'           => $this->contributes,
         ];
     }
