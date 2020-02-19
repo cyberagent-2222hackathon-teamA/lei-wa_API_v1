@@ -5,16 +5,21 @@ namespace App\Services;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Cache;
+use App\Repositories\CacheRepository;
 
 class UserService
 {
 
     private $user_repository;
 
-    public function __construct(UserRepository $user_repository)
-    {
+    private $cache_repository;
+
+    public function __construct(
+        UserRepository $user_repository,
+        CacheRepository $cache_repository
+    ){
         $this->user_repository = $user_repository;
+        $this->cache_repository = $cache_repository;
     }
 
     /**
@@ -36,10 +41,9 @@ class UserService
         $timestamp_end   = mktime(23,59, 59, date('m'),date('d'),date('Y'));
 
         //channelから全ユーザーのcontributesを取得
-
         $cache_key = "slack_contributes_".$slack_channel_id.date("_Ymd");
-        if(Cache::has($cache_key)){//cacheがある場合はcacheからデータ取得
-            $all_user_contributes = Cache::get($cache_key);
+        if($this->cache_repository->isCacheDataPresent($cache_key)){//cacheがある場合はcacheからデータ取得
+            $all_user_contributes = $this->cache_repository->getCacheData($cache_key);
         }else{//なければapiからデータ取得
             $all_user_contributes = $this->user_repository->getSlackDataByChannelAndTime(
                 $slack_channel_id,
@@ -48,7 +52,7 @@ class UserService
                 $timestamp_end);
 
             //cacheに保存
-            Cache::put($cache_key, $all_user_contributes, 60 * 24);
+            $this->cache_repository->setCacheData($cache_key, $all_user_contributes, 60 * 24);
         }
 
         //user_idで特定userの投稿を絞り込み
