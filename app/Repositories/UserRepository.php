@@ -7,6 +7,7 @@ use App\Models\SlackWorkspaceUser;
 use App\Entities\UserEntity;
 use App\Utilities\EntityMapper;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 class UserRepository
 {
@@ -44,17 +45,27 @@ class UserRepository
         $slack_user_id      = $slack_user_info['slack_user_id'];
         $slack_token        = $slack_user_info['slack_workspace']['token'];
 
-        //slackと通信
-        $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channels.history', [
-            'query' => [
-                'channel' => $slack_channel_id,
-                'token'   => $slack_token,
-                'oldest'  => $oldest,
-                'latest'  => $latest,
-            ]
-        ]);
+        $cache_key = "slack_contributes_".date("Ymd");
 
-        $todays_all_user_activity = json_decode($api_res->getBody()->getContents())->messages;
+        if(Cache::has($cache_key)){
+            //cacheからデータを取得
+            $todays_all_user_activity = Cache::get($cache_key);
+        }else{
+            //slackと通信
+            $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channels.history', [
+                'query' => [
+                    'channel' => $slack_channel_id,
+                    'token'   => $slack_token,
+                    'oldest'  => $oldest,
+                    'latest'  => $latest,
+                ]
+            ]);
+
+            $todays_all_user_activity = json_decode($api_res->getBody()->getContents())->messages;
+            //cacheに保存
+            Cache::put($cache_key, $todays_all_user_activity, 60);
+
+        }
 
         $user_activity = collect($todays_all_user_activity)->where('user', $slack_user_id);
 
