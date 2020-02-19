@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('command:slack_get_data_queueing')
+            ->timezone("Asia/Tokyo")
             ->daily();
     }
 
