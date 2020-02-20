@@ -69,13 +69,18 @@ class TimelineRepository
             ->pluck('followed_id')
             ->toArray();
 
+        if(empty($follow_ids)){
+            $contributes = [];
+        }else{
+            $contributes = $this->timeline::with('user')
+                ->where('user_id', $follow_ids)
+                ->orderBy('id', 'desc')
+                ->forPage($page, $limit)
+                ->get()
+                ->toArray();
+        }
 
-        $contributes = $this->timeline::with('user')
-            ->where('user_id', $follow_ids)
-            ->orderBy('id', 'desc')
-            ->forPage($page, $limit)
-            ->get()
-            ->toArray();
+
 
         $res = [
             'total_page'  => $total,
