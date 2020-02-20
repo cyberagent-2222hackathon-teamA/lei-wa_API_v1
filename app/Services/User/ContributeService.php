@@ -38,6 +38,8 @@ class ContributeService
               $latest   = mktime(23,59, 59, date('m', $date),date('d', $date),date('Y', $date));
           }
 
+
+
           $res = $this->user_repository->getTodaySlackData($twitter_id, $oldest, $latest);
 
           $res->each(function($item, $index){

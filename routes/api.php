@@ -19,7 +19,7 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::get ('/users/{name}', 'UserController@show');
 
-    Route::get ('/users/{twitter_id}/contributes', 'User\ContributeController@index');
+    Route::get ('/users/{name}/contributes', 'User\ContributeController@index');
 
     Route::get ('/timeline/public', 'TimelineController@public');
 

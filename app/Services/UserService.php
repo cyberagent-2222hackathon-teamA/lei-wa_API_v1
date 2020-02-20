@@ -50,13 +50,13 @@ class UserService
                 $slack_token,
                 $timestamp_start,
                 $timestamp_end);
-
-            //cacheに保存
-            $this->cache_repository->setCacheData($cache_key, $all_user_contributes, 60 * 24);
         }
 
-        //user_idで特定userの投稿を絞り込み
-        $user_contributes = collect($all_user_contributes)->where('user', $slack_user_id);
+        //user_idと日時で特定userの投稿を絞り込み
+        $user_contributes = collect($all_user_contributes)
+            ->where('user', $slack_user_id)
+            ->where('ts', '>', $timestamp_start)
+            ->where('ts', '<', $timestamp_end);
 
         //reaction_count計算
         $reaction_count = $user_contributes->sum(function ($el) {
