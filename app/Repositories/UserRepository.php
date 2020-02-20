@@ -7,7 +7,6 @@ use App\Models\SlackWorkspaceUser;
 use App\Entities\UserEntity;
 use App\Utilities\EntityMapper;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Cache;
 
 class UserRepository
 {
@@ -23,53 +22,45 @@ class UserRepository
 
 
     /**
-     * 特定userの指定範囲のslackのデータを返す
+     * 特定channelの指定期日範囲のslackのデータを返す
      *
-     * @param string $twitter_id twitter id
+     * @param string $slack_channel_id slack channelのid
      * @param string $oldest 最も古いメッセージのtimestamp
      * @param string $latest 最も新しいメッセージのtimestamp
      *
      * @return UserEntity
      */
-    public function getTodaySlackData($twitter_id, $oldest, $latest){
+    public function getSlackDataByChannelAndTime($slack_channel_id, $slack_token, $oldest, $latest){
 
-        //user_idからslackのchannelとuser名を取得
-        $user_id = $this->getUserByTwitterId($twitter_id)->id;
+        $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channels.history', [
+            'query' => [
+                'channel' => $slack_channel_id,
+                'token'   => $slack_token,
+                'oldest'  => $oldest,
+                'latest'  => $latest,
+            ]
+        ]);
+
+        $all_user_contributes = json_decode($api_res->getBody()->getContents())->messages;
+
+        return $all_user_contributes;
+
+    }
+
+    /**
+     * user idでuserを特定し, userのslack関連情報を返す
+     *
+     * @param int user_id user id
+     * @return array
+     */
+    public function getSlackInfoByUserId(int $user_id){
 
         $slack_user_info = $this->slack_workspace_user::with('slack_workspace')
             ->where('user_id', $user_id)
             ->firstOrFail()
             ->toArray();
 
-        $slack_channel_id   = $slack_user_info['channel_id'];
-        $slack_user_id      = $slack_user_info['slack_user_id'];
-        $slack_token        = $slack_user_info['slack_workspace']['token'];
-
-        $cache_key = "slack_contributes_".date("Ymd");
-
-        if(Cache::has($cache_key)){
-            //cacheからデータを取得
-            $todays_all_user_activity = Cache::get($cache_key);
-        }else{
-            //slackと通信
-            $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channels.history', [
-                'query' => [
-                    'channel' => $slack_channel_id,
-                    'token'   => $slack_token,
-                    'oldest'  => $oldest,
-                    'latest'  => $latest,
-                ]
-            ]);
-
-            $todays_all_user_activity = json_decode($api_res->getBody()->getContents())->messages;
-            //cacheに保存
-            Cache::put($cache_key, $todays_all_user_activity, 60);
-
-        }
-
-        $user_activity = collect($todays_all_user_activity)->where('user', $slack_user_id);
-
-        return $user_activity;
+        return $slack_user_info;
 
     }
 
@@ -91,17 +82,17 @@ class UserRepository
     }
 
     /**
-     * twitter idでuserを特定し, userの情報を返す
+     * user nameでuserを特定し, userの情報を返す
      *
      * @param string $twitter_id users twitter id
      * @return UserEntity
      */
-    public function getUserByTwitterId(string $twitter_id){
+    public function getUserByName(string $name){
 
-        $user = $this->user::with(['contributes', 'follows'])
-            ->where('name', $twitter_id)
-            ->firstOrFail()
-            ->toArray();
+        $user = $this->user::with(['contributes'])
+                     ->where('name', $name)
+                     ->firstOrFail()
+                     ->toArray();
 
         return EntityMapper::map($user, UserEntity::class);
 

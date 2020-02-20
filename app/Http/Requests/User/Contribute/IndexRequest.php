@@ -8,8 +8,8 @@ class IndexRequest extends FormRequest
     public function rules()
     {
         return [
-            'date'    => ['nullable', 'date'],
-            'twitter_id' => ['required', 'string'],
+            'date' => ['nullable', 'date'],
+            'name' => ['required', 'string'],
         ];
     }
 
@@ -17,7 +17,7 @@ class IndexRequest extends FormRequest
     public function validationData()
     {
         return array_merge($this->all(), [
-            'twitter_id' => $this->route('twitter_id'),
+            'name' => $this->route('name'),
         ]);
     }
 }

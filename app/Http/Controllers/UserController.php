@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function show(ShowRequest $request)
     {
-        $res = $this->user_service->getUserByTwitterId($request->route('twitter_id'));
+        $res = $this->user_service->getUserByName($request->route('name'));
         return $res;
     }
 }
