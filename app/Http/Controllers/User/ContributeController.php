@@ -19,7 +19,7 @@ class ContributeController extends Controller
 
     public function index(IndexRequest $request)
     {
-        $res = $this->contribute_service->getUserContributesById($request->route('name'), $request->validated());
+        $res = $this->contribute_service->getUserContributesByName($request->route('name'), $request->validated());
         return $res;
     }
 }

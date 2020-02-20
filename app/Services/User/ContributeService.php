@@ -2,7 +2,8 @@
 
 namespace App\Services\User;
 
-use \App\Repositories\UserRepository;
+use App\Repositories\UserRepository;
+use App\Repositories\CacheRepository;
 
 use App\Utilities\EntityMapper;
 
@@ -14,39 +15,72 @@ class ContributeService
 
     private $user_repository;
 
-    public function __construct(UserRepository $user_repository)
-    {
+    private $cache_repository;
+
+    public function __construct(
+        UserRepository $user_repository,
+        CacheRepository $cache_repository
+    ){
         $this->user_repository = $user_repository;
+        $this->cache_repository = $cache_repository;
     }
 
     /**
      * userのactivity情報の詳細を取得する
      *
-     * @param string $twitter_id twitter id
+     * @param string $name user name(twitter id)
      * @param array $params params
      * @return array
      */
-    public function getUserContributesById(string $twitter_id, array $params)
+    public function getUserContributesByName(string $name, array $params)
     {
-          $oldest = '';
-          $latest = '';
+        $oldest = '';
+        $latest = '';
 
-          if(isset($params['date'])){
-              $date_str = $params['date'];
-              $date = strtotime($date_str);
-              $oldest   = mktime(0,0, 0, date('m', $date),date('d', $date),date('Y', $date));
-              $latest   = mktime(23,59, 59, date('m', $date),date('d', $date),date('Y', $date));
-          }
+        $user_data = $this->user_repository->getUserByName($name)->toArray();
+        $slack_user_info = $this->user_repository->getSlackInfoByUserId($user_data['id']);
 
+        $slack_channel_id   = $slack_user_info['channel_id'];
+        $slack_user_id      = $slack_user_info['slack_user_id'];
+        $slack_token        = $slack_user_info['slack_workspace']['token'];
 
+        if(isset($params['date'])){
+          $date_str = $params['date'];
+          $date = strtotime($date_str);
+          $oldest   = mktime(0,0, 0, date('m', $date),date('d', $date),date('Y', $date));
+          $latest   = mktime(23,59, 59, date('m', $date),date('d', $date),date('Y', $date));
+        }
 
-          $res = $this->user_repository->getTodaySlackData($twitter_id, $oldest, $latest);
+        //channelから全ユーザーのcontributesを取得
+        $cache_key = "slack_contributes_".$slack_channel_id.date("_Ymd");
+        if($this->cache_repository->isCacheDataPresent($cache_key)){//cacheがある場合はcacheからデータ取得
+            $all_user_contributes = $this->cache_repository->getCacheData($cache_key);
+        }else{//なければapiからデータ取得
+            $all_user_contributes = $this->user_repository->getSlackDataByChannelAndTime(
+                $slack_channel_id,
+                $slack_token,
+                $oldest,
+                $latest
+            );
+        }
 
-          $res->each(function($item, $index){
-             $item->id = $index;
-          });
+        //user_idで特定userの投稿を絞り込み
+        $user_contributes = collect($all_user_contributes)
+            ->where('user', $slack_user_id);
 
-          return EntityMapper::collection($res->toArray(), DailyContributesEntity::class);
+        //date指定されている場合はdateで絞り込み
+        if(isset($params['date'])){
+            $user_contributes = $user_contributes
+                ->where('ts', '>', $oldest)
+                ->where('ts', '<', $latest);
+        }
+
+        //index追加
+        $user_contributes->each(function($item, $index){
+         $item->id = $index;
+        });
+
+        return EntityMapper::collection($user_contributes->toArray(), DailyContributesEntity::class);
     }
 
 }
