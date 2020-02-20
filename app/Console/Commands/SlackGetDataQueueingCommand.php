@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Jobs\SlackGetDataJob;
-use App\Repositories\UserRepository;
 
 class SlackGetDataQueueingCommand extends Command
 {
