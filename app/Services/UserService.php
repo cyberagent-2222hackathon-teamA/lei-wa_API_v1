@@ -71,7 +71,7 @@ class UserService
         $post_count = $user_contributes->count();
 
         $todays_contributes_summary = [
-            'id'             => $user_data['contributes']->last()->id + 1,
+            'id'             => empty($user_data['contributes']->toArray()) ? 1 : $user_data['contributes']->last()->id + 1,
             'post_count'     => $post_count,
             'reaction_count' => $reaction_count,
             'date'           => date("Y-m-d")
