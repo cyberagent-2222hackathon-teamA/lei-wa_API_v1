@@ -41,6 +41,7 @@ class UserService
         if($contribute_count >= 29){
             $user_data['contributes'] = $user_data['contributes']->take(-29);
         }else{
+            $additional_contributes = [];
             for($i=0; $i<29-$contribute_count; $i++){
                 $date = date('Y-m-d', strtotime('-'.($i+1).' day', $last_date));
                 $additional_contributes[] = [
@@ -49,12 +50,10 @@ class UserService
                     'reaction_count' => 0,
                     'date'           => $date
                 ];
-
-                $additional_contributes_entity = EntityMapper::collection($additional_contributes, ContributeSummaryEntity::class);
-
             }
+            $additional_contributes_entity = EntityMapper::collection($additional_contributes, ContributeSummaryEntity::class);
 
-            $user_data['contributes'] = $additional_contributes_entity->concat($user_data['contributes']);
+            $user_data['contributes'] = $additional_contributes_entity->reverse()->concat($user_data['contributes']);
         }
 
         //id降り直し
