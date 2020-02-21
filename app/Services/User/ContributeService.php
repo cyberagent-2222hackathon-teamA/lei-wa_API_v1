@@ -66,8 +66,7 @@ class ContributeService
         }
 
         //user_idで特定userの投稿を絞り込み
-        $user_contributes = collect($all_user_contributes)
-            ->where('user', $slack_user_id);
+        $user_contributes = collect($all_user_contributes);
 
         //date指定されている場合はdateで絞り込み
         if(isset($params['date'])){
@@ -111,6 +110,9 @@ class ContributeService
         $user_contributes = $user_contributes->filter(function($item){
             return !isset($item->parent_user_id);
         });
+
+        //自分のみに絞り込み
+         $user_contributes = $user_contributes->where('user', $slack_user_id);
 
         return EntityMapper::collection($user_contributes->toArray(), DailyContributesEntity::class);
     }
