@@ -21,6 +21,11 @@ class DailyContributesEntity extends BaseEntity
     public $reactions;
 
     /**
+     * @var BaseEntityCollection[DailyContributesEntity]
+     */
+    public  $replies;
+
+    /**
      * classを配列に変換
      * @return array
      */
@@ -30,7 +35,8 @@ class DailyContributesEntity extends BaseEntity
         return [
             'id'        => $this->id,
             'message'   => $this->text,
-            'reactions' => $this->reactions ? $this->reactions : [],
+            'reactions' => $this->reactions ?? [],
+            'replies'   => $this->replies ?? []
         ];
     }
 }
