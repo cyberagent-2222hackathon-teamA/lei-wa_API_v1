@@ -53,7 +53,8 @@ class UserService
             }
             $additional_contributes_entity = EntityMapper::collection($additional_contributes, ContributeSummaryEntity::class);
 
-            $user_data['contributes'] = $additional_contributes_entity->reverse()->concat($user_data['contributes']);
+            $user_contributes = [];
+            $user_data['contributes'] = $additional_contributes_entity->reverse()->concat($user_data['contributes'])->values();
         }
 
         //id降り直し
