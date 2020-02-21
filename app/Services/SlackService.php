@@ -6,6 +6,8 @@ use App\Repositories\UserRepository;
 use App\Repositories\SlackRepository;
 use App\Repositories\CacheRepository;
 
+use GuzzleHttp\Promise;
+
 class SlackService
 {
 
@@ -41,19 +43,22 @@ class SlackService
         //channel_idからそのchannelに属する全userを取得
         $channel_users = $this->slack_repository->getChannelUsers($slack_token, $slack_channel_id);
 
-        //それぞれのuserに対してinfoを取得するGuzzleObjectを取得
         foreach ($channel_users as $channel_user){
-            $promises[] = $this->slack_repository->getSlackUserById($channel_user);
-        }
-        //並列でリクエスト実行
-        $responses = Promise\settle($promises)->wait();
-
-        //parse
-        foreach ($responses as $response) {
-            $result[] = $response->getBody()->getContents();
+            $promises[] = $this->slack_repository->getSlackUserById($slack_token, $channel_user);
         }
 
-        return $result;
+        $responses = Promise\all($promises)->wait();
+
+        foreach ($responses as $response){
+            $user_info = json_decode($response->getBody()->getContents())->user;
+            $users_info[] = [
+              'id'   => $user_info->id,
+              'name' => $user_info->name
+            ];
+        }
+
+        return $users_info;
+
 
     }
 

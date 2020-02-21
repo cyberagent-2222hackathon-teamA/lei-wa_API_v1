@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use App\Http\Requests\Slack\GetUsersRequest;
+use App\Services\SlackService;
 
 
 class SlackController extends Controller
@@ -16,7 +17,7 @@ class SlackController extends Controller
         $this->slack_service = $slack_service;
     }
 
-    public function getUsers(PublicRequest $request)
+    public function getUsers(GetUsersRequest $request)
     {
         $res = $this->slack_service->getSameWorkSpaceUsers($request->input('user_id'));
         return $res;
