@@ -4,8 +4,10 @@ namespace App\Services;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
+use App\Entities\ContributeSummaryEntity;
 use App\Repositories\UserRepository;
 use App\Repositories\CacheRepository;
+use App\Utilities\EntityMapper;
 
 class UserService
 {
@@ -31,6 +33,35 @@ class UserService
     public function getUserByName(string $name)
     {
         $user_data = $this->user_repository->getUserByName($name)->toArray();
+
+        //contributesが絶対に30日になることを保証
+        $contribute_count = count($user_data['contributes']);
+        $last_date = strtotime($user_data['contributes'][0]->date);
+
+        if($contribute_count >= 29){
+            $user_data['contributes'] = $user_data['contributes']->take(-29);
+        }else{
+            for($i=0; $i<29-$contribute_count; $i++){
+                $date = date('Y-m-d', strtotime('-'.($i+1).' day', $last_date));
+                $additional_contributes[] = [
+                    'id'             => 1,
+                    'post_count'     => 0,
+                    'reaction_count' => 0,
+                    'date'           => $date
+                ];
+
+                $additional_contributes_entity = EntityMapper::collection($additional_contributes, ContributeSummaryEntity::class);
+
+            }
+
+            $user_data['contributes'] = $additional_contributes_entity->concat($user_data['contributes']);
+        }
+
+        //id降り直し
+        $user_data['contributes']->each(function($item, $index){
+            $item->id = $index;
+        });
+
         $slack_user_info = $this->user_repository->getSlackInfoByUserId($user_data['id']);
 
         $slack_channel_id   = $slack_user_info['channel_id'];
