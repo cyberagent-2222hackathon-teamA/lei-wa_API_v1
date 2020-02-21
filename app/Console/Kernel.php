@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SlackGetDataQueueingCommand::class,
-        Commands\SlackGetRealTimeDataCachingCommand::class
+        Commands\SlackGetRealTimeDataCachingCommand::class,
+        Commands\SlackEmojiDataCachingCommand::class,
     ];
 
     /**
