@@ -38,6 +38,7 @@ class ContributeService
         $latest = '';
 
         $user_data = $this->user_repository->getUserByName($name)->toArray();
+        $user_name = $user_data['name'];
         $slack_user_info = $this->user_repository->getSlackInfoByUserId($user_data['id']);
 
         $slack_channel_id   = $slack_user_info['channel_id'];
@@ -75,9 +76,40 @@ class ContributeService
                 ->where('ts', '<', $latest);
         }
 
+        //自分がかかわらないイベントに関しては除去
+        $user_contributes = $user_contributes->filter(function($item) use ($slack_user_id){
+            return !(isset($item->subtype) && $item->user != $slack_user_id);
+        });
+
+        //自分が関わるイベントに関してはmessageの主語をtwitter_idに変換
+        $user_contributes = $user_contributes->each(function($item) use ($user_name){
+            if(isset($item->subtype)){
+                $message_array = preg_split("/\s/", $item->text);
+                $message_array[0] = $user_name;
+                $message = join(' ', $message_array);
+                $item->text = $message;
+            }
+        });
+
         //index追加
         $user_contributes->each(function($item, $index){
          $item->id = $index;
+        });
+
+        //replyがある場合reply追加
+        $user_contributes->each(function($user_contribute) use ($user_contributes){
+            //replyがある場合
+            if(isset($user_contribute->replies)){
+                $replies = collect($user_contribute->replies)->map(function($item) use ($user_contributes){
+                    return $user_contributes->firstWhere('ts', $item->ts);
+                });
+                $user_contribute->replies = $replies;
+            }
+        });
+
+        //replyは除去
+        $user_contributes = $user_contributes->filter(function($item){
+            return !isset($item->parent_user_id);
         });
 
         return EntityMapper::collection($user_contributes->toArray(), DailyContributesEntity::class);
