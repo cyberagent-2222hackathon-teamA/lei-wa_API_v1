@@ -36,7 +36,9 @@ class UserService
 
         //contributesが絶対に30日になることを保証
         $contribute_count = count($user_data['contributes']);
-        $last_date = strtotime($user_data['contributes'][0]->date);
+        $last_date = strtotime($contribute_count == 0 ? date('Y-m-d') : $user_data['contributes'][0]->date);
+
+
 
         if($contribute_count >= 29){
             $user_data['contributes'] = $user_data['contributes']->take(-29);
@@ -123,5 +125,19 @@ class UserService
     public function updateSlackInfo($user_id, $params){
         $this->user_repository->updateSlackInfo($user_id, $params);
     }
+
+    /**
+     * 自身の情報を取得する
+     *
+     * @param int $user_id user id
+     * @return
+     */
+    public function showIAM($user_id){
+        $user_info = $this->getUserByName('Fumi_Oc7');
+        $is_setting_completed = $this->user_repository->isSettingCompleted($user_info['id']);
+        $user_info["is_setting_completed"] = $is_setting_completed;
+        return $user_info;
+    }
+
 
 }
