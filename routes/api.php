@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get ('/slack/users', 'SlackController@getUsers');
         Route::put ('/users/slack_info', 'UserController@updateSlackInfo');
         Route::put ('/users/follow', 'UserController@updateFollowStatus');
+        Route::get ('/users', 'UserController@showIAM');
     });
 });
 

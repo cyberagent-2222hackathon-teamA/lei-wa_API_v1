@@ -200,4 +200,16 @@ class UserRepository
              ->firstOrFail()
              ->update($params);
     }
+
+    /**
+     * 自身の情報を取得する
+     */
+    public function showIAM($user_id){
+
+        $user = $this->user::with('slack_info')
+            ->where('id', $user_id)
+            ->firstOrFail();
+
+        return $user;
+    }
 }
