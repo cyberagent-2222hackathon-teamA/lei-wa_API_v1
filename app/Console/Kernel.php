@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\SlackGetDataQueueingCommand::class,
         Commands\SlackGetRealTimeDataCachingCommand::class,
         Commands\SlackEmojiDataCachingCommand::class,
+        Commands\SlackUserDataCachingCommand::class,
     ];
 
     /**
@@ -31,6 +32,10 @@ class Kernel extends ConsoleKernel
             ->daily();
 
         $schedule->command('command:slack_realtime_data_caching')
+            ->timezone("Asia/Tokyo")
+            ->everyMinute();
+
+        $schedule->command('command:user_data_caching')
             ->timezone("Asia/Tokyo")
             ->everyMinute();
     }

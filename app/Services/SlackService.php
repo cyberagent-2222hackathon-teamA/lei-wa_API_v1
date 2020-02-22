@@ -41,24 +41,29 @@ class SlackService
         $slack_token        = $slack_user_info['slack_workspace']['token'];
 
         //channel_idからそのchannelに属する全userを取得
-        $channel_users = $this->slack_repository->getChannelUsers($slack_token, $slack_channel_id);
 
-        foreach ($channel_users as $channel_user){
-            $promises[] = $this->slack_repository->getSlackUserById($slack_token, $channel_user);
-        }
+        $cache_key = $slack_channel_id."_users";
+        if($this->cache_repository->isCacheDataPresent($cache_key)){
+            $users_info = $this->cache_repository->getCacheData($cache_key);
+        }else{
+            $channel_users = $this->slack_repository->getChannelUsers($slack_token, $slack_channel_id);
 
-        $responses = Promise\all($promises)->wait();
+            foreach ($channel_users as $channel_user){
+                $promises[] = $this->slack_repository->getSlackUserById($slack_token, $channel_user);
+            }
 
-        foreach ($responses as $response){
-            $user_info = json_decode($response->getBody()->getContents())->user;
-            $users_info[] = [
-              'id'   => $user_info->id,
-              'name' => $user_info->name
-            ];
+            $responses = Promise\all($promises)->wait();
+
+            foreach ($responses as $response){
+                $user_info = json_decode($response->getBody()->getContents())->user;
+                $users_info[] = [
+                    'id'   => $user_info->id,
+                    'name' => $user_info->name
+                ];
+            }
         }
 
         return $users_info;
-
 
     }
 
