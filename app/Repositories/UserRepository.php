@@ -202,14 +202,14 @@ class UserRepository
     }
 
     /**
-     * 自身の情報を取得する
+     * userのslack情報入力が完了しているかどうかを確認する
      */
-    public function showIAM($user_id){
+    public function isSettingCompleted($user_id){
 
         $user = $this->user::with('slack_info')
             ->where('id', $user_id)
-            ->firstOrFail();
+            ->first();
 
-        return $user;
+        return isset($user->slack_info->slack_user_id);
     }
 }
