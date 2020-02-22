@@ -133,7 +133,8 @@ class UserService
      * @return
      */
     public function showIAM($user_id){
-        $user_info = $this->getUserByName('Fumi_Oc7');
+        $user_name = $this->user_repository->getUserById($user_id)['name'];
+        $user_info = $this->getUserByName($user_name);
         $is_setting_completed = $this->user_repository->isSettingCompleted($user_info['id']);
         $user_info["is_setting_completed"] = $is_setting_completed;
         return $user_info;
