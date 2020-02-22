@@ -175,6 +175,15 @@ class UserRepository
             ->where('id', $user_id)
             ->firstOrFail();
 
+        //すでに情報が存在する場合は作成せずにreturn
+        $slack_info = $this->slack_workspace_user
+        ->where('user_id', $user_id)
+        ->first();
+
+        if(isset($slack_info)){
+            return;
+        }
+
         $user->slack_info()->create($params);
 
     }
