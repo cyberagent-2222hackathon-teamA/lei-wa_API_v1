@@ -27,6 +27,12 @@ class UserController extends Controller
 
     public function updateSlackInfo(UpdateSlackInfoRequest $request)
     {
+        $res = $this->user_service->updateSlackInfo($request->input('user_id'), $request->validated());
+        return $res;
+    }
+
+    public function updateFollowStatus(UpdateSlackInfoRequest $request)
+    {
         $res = $this->user_service->updateSlackInfo($request->input('user_id'), $request->all());
         return $res;
     }

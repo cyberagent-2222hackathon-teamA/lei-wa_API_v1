@@ -9,6 +9,7 @@ class UpdateSlackInfoRequest extends FormRequest
     {
         return [
             'user_id'       => ['required', 'integer'],
+            'slack_user_id' => ['required', 'string'],
         ];
     }
 }
