@@ -27,8 +27,8 @@ class SlackTable extends Migration
             $table->integer('user_id')->comment('user id');
             $table->integer('slack_workspace_id')->comment('slack workspace id');
             $table->string('channel_id')->comment('slack channel id');
-            $table->string('channel_name')->comment('slack channel name');
-            $table->string('slack_user_id')->comment('slack channel id');
+            $table->string('channel_name')->nullable()->comment('slack channel name');
+            $table->string('slack_user_id')->nullable()->comment('slack channel id');
             $table->timestamps();
         });
     }

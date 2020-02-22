@@ -26,4 +26,9 @@ class User extends Model
         return $this->hasMany(Follow::class, 'follow_id');
     }
 
+    public function slack_info()
+    {
+        return $this->hasOne(SlackWorkspaceUser::class);
+    }
+
 }

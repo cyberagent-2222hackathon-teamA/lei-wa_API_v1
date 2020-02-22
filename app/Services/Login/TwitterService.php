@@ -87,6 +87,15 @@ class TwitterService
 
         $token   = $this->user_repository->updateToken($user_id);
 
+        //slackの既存のworkspace, channelに紐付け
+        $slack_params = [
+            'slack_workspace_id' => 1,
+            //ここはチャンネルを作成して編集
+            'channel_id' => 'CU2T0UT9N'
+        ];
+
+        $this->user_repository->createSlackInfo($user_id, $slack_params);
+
         return [
             'token' => $token
         ];
