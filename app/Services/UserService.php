@@ -123,7 +123,9 @@ class UserService
      * @return
      */
     public function updateSlackInfo($user_id, $params){
-        $this->user_repository->updateSlackInfo($user_id, $params);
+        if($this->user_repository->updateSlackInfo($user_id, $params)){
+            return ['status' => 'ok'];
+        };
     }
 
     /**

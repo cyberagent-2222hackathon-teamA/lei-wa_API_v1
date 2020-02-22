@@ -199,6 +199,8 @@ class UserRepository
              ->where('user_id', $user_id)
              ->firstOrFail()
              ->update($params);
+
+        return true;
     }
 
     /**
