@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UpdateSlackInfoRequest;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\User\ShowRequest;
 
@@ -21,6 +22,12 @@ class UserController extends Controller
     public function show(ShowRequest $request)
     {
         $res = $this->user_service->getUserByName($request->route('name'));
+        return $res;
+    }
+
+    public function updateSlackInfo(UpdateSlackInfoRequest $request)
+    {
+        $res = $this->user_service->updateSlackInfo($request->input('user_id'), $request->all());
         return $res;
     }
 }

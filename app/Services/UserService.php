@@ -113,4 +113,15 @@ class UserService
         return $user_data;
     }
 
+    /**
+     * userのslack情報を更新する
+     *
+     * @param int $user_id user id
+     * @param params users slack info update params
+     * @return
+     */
+    public function updateSlackInfo($user_id, $params){
+        $this->user_repository->updateSlackInfo($user_id, $params);
+    }
+
 }

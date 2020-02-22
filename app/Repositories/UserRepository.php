@@ -162,4 +162,33 @@ class UserRepository
         $user->fill($params)->save();
 
     }
+
+    /**
+     * userのslack情報を作成する
+     *
+     * @param int $user_id user id
+     * @param array $params slack情報
+     */
+    public function createSlackInfo($user_id, $params){
+
+        $user = $this->user
+            ->where('id', $user_id)
+            ->firstOrFail();
+
+        $user->slack_info()->create($params);
+
+    }
+
+    /**
+     * userのslack情報を更新する
+     *
+     * @param int $user_id user id
+     * @param array $params slack情報
+     */
+    public function updateSlackInfo($user_id, $params){
+        $this->slack_workspace_user
+             ->where('user_id', $user_id)
+             ->firstOrFail()
+             ->update($params);
+    }
 }

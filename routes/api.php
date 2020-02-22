@@ -24,7 +24,8 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::middleware('check_auth')->group(function () {
         Route::get ('/timeline/private', 'TimelineController@private');
-//        Route::get ('/slack/users', 'SlackController@getUsers');
+        Route::get ('/slack/users', 'SlackController@getUsers');
+        Route::put ('/users/slack_info', 'UserController@updateSlackInfo');
     });
 });
 

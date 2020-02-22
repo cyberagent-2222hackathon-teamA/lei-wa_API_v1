@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Entities\ContributeSummaryWithUserEntity;
+use App\Entities\UserEntity_xs;
 use App\Models\ContributeSummary;
 use App\Models\Follow;
 use App\Utilities\EntityMapper;
@@ -33,17 +33,14 @@ class SlackRepository
      */
     public function getChannelUsers($token, $channel_id){
 
-        $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/channel.list', [
+        $api_res = (new \GuzzleHttp\Client())->get(config('slack.api_url').'/conversations.members', [
             'query' => [
                 'token'   => $token,
+                'channel' => $channel_id
             ]
         ]);
 
-        $all_channels_info = json_decode($api_res->getBody()->getContents());
-
-        $channel_info = collect($all_channels_info)->where('id', $channel_id);
-
-        return $channel_info ? $channel_info->members : [];
+        return json_decode($api_res->getBody()->getContents())->members;
 
     }
 
@@ -55,9 +52,20 @@ class SlackRepository
      *
      * @return
      */
-    public function getSlackUserById($token, $channel_id){
+    public function getSlackUserById($token, $user_id){
 
-        return "aa";
+        $promise = (new \GuzzleHttp\Client())->requestAsync(
+            'GET',
+            config('slack.api_url').'/users.info',
+            [
+                'query' => [
+                    'token' => $token,
+                    'user'  => $user_id
+                ],
+            ]
+        );
+
+        return $promise;
 
     }
 
